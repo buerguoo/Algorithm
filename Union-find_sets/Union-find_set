@@ -1,0 +1,21 @@
+//并查集的关键是节点与节点间存在关系
+int F[MAXN], val[MAXN];
+int find(int x)
+{
+    if(F[x] == -1)  return x;
+    int tmp = find(F[x]);
+    //添加对于val的操作
+    return F[x] = tmp;
+}
+int union(int a, int b)
+{
+    int t1 = find(a);
+    int t2 = find(b);
+    if(t1 != t2){
+        F[t2] = t1;
+        //解决t2与t1的关系
+    }
+    else{
+        //如果二者已经在同一集合中，判断
+    }
+}
