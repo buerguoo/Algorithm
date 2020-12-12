@@ -43,10 +43,15 @@ int zhuliu(int root, int n, int m, Edge E[])
         
         //将环视为点，重新构图
         for(int i = 0;i < m;){
+            int v = E[i].v;
             E[i].u = id[E[i].u];
             E[i].v = id[E[i].v];
             if(E[i].u  != E[i].v)
-                E[i++].cost -= in[E[i].v];            
+                E[i++].cost -= in[E[i].v];  
+            else
+                swap(E[i],  E[--m]);         
         }
+        n = tn;
+        root = id[root];
     }
 }
