@@ -1,0 +1,52 @@
+struct Edge{
+    int u, v, cost;
+}E[MAXN];
+int in[MAXN], id[MAXN], vis[MAXN];
+int zhuliu(int root, int n, int m, Edge E[])
+{
+    int res = 0;
+    while(1){
+        for(int i = 0;i < n;++i)
+            in[i] = INF;
+        //找到每个结点的最小入边
+        for(int i = 0;i < m;++i)
+            if(E[i].u != E[i].v && in[E[i].v] < E[i].cost){
+            pre[E[i].v] = E[i].u;
+            in[E[i].v] = E[i].cost;
+        }
+        //有生成树达不到的结点
+        for(int i = 0;i < n;++i)
+            if(in[i] == INF && i != root)
+                return -1;
+
+        memset(id, -1, sizeof(id));
+        memset(vis, -1, sizeof(vis));
+        int tn = 0;
+        in[root] = 0;
+        for(int i = 0;i < n;++i){
+            res += in[i];
+            int v = i;
+            while(v != root && vis[v] != i && id[v] == -1){
+                vis[v] = i;
+                v= pre[v];
+            }   
+            if(v != root && id[v] == -1)
+                for(int u = pre[v];u != v;u = pre[u])
+                    id[u] = tn;
+                id[v] = tn++;
+        }
+        //没有环
+        if(tn == 0) break;
+        for(int i = 0;i < n;++i)
+            if(id[i] == -1)
+                id[i] = tn++;
+        
+        //将环视为点，重新构图
+        for(int i = 0;i < m;){
+            E[i].u = id[E[i].u];
+            E[i].v = id[E[i].v];
+            if(E[i].u  != E[i].v)
+                E[i++].cost -= in[E[i].v];            
+        }
+    }
+}
