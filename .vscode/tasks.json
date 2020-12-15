@@ -1,7 +1,7 @@
 {
     "tasks": [
         {
-            "type": "cppbuild",
+            "type": "cppdbg",
             "label": "C/C++: g++.exe build active file",
             "command": "D:\\mingw\\bin\\g++.exe",
             "args": [
