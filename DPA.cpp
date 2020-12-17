@@ -15,7 +15,7 @@ const int MAXM = 500;
 
 int Pro[MAXM], Start[MAXM];
 int pre[MAXN<<2], suf[MAXN<<2], Max[MAXN<<2], add[MAXN];
-//??????????????
+//��¼�ڴ�ŵ�ʹ�����
 bool vis[MAXM];
 map<int, int> M;
 
@@ -73,7 +73,7 @@ int Query(int L, int l, int r, int rt)
     else return -1;
 }
 
-//????????
+//�����Ӧ��
 int _Query(int L, int l, int r, int rt)
 {
     if(l == r) return l;
@@ -90,10 +90,10 @@ int _Query(int L, int l, int r, int rt)
 
 void show(int m)
 {
-    printf("|Process start memory|Process size|Process number|\n");
+    printf("|    进程开始内存\t|    进程大小\t|进程号\t|\n");
     for(int i = 1;i <= m;++i) if(Start[i]){
         printf("*************************************************\n");
-        printf("|\t%d\t     |\t%d\t  |\t  %d\t|\n", Start[i], Pro[i], i);
+        printf("|\t%d\t\t|\t%d\t|   %d\t|\n", Start[i], Pro[i], i);
 
     }
 }
@@ -101,12 +101,12 @@ void show(int m)
 int main()
 {
     int n, m;
-    printf("Please enter the size of the memory:");
+    printf("请输入内存大小:");
     scanf("%d", &n);
-    printf("Please enter the number of processes:");    
+    printf("请输入进程的个数:");    
     scanf("%d", &m);
     build(1, n, 1);
-    printf("Memory space occupied by each process:\n");
+    printf("每个进程占据的内存空间:\n");
     for(int i = 1;i <= m;++i)
         scanf("%d", &Pro[i]);
     
@@ -115,39 +115,39 @@ int main()
     int choice, a;
     bool b = false;
     getchar();
-    printf("Select how to allocate memory:\n1.First adaptation\n2.Best fit method\n");
+    printf("选择内存的分配方式:\n1.最先适应法\n2.最佳适应法\n");
     scanf("%d", &a);
     if(a == 1)  b = false;  
     else if(a == 2)  b = true;  
     else{
-        printf("Please input legal data!\n");
+        printf("请输入合法数据!\n");
         return 0;
     }
     while(1){
-        printf("\n  Enter the following to select:\n0.exit\n1.allocate\n2.release\n3.show");
-        printf("\n4.Changing memory allocation\n5.Add new process\n\n");
+        printf("\n输入以下进行选择:\n0.退出\n1.分配内存\n2.释放内存\n3.展示内存空间的");
+        printf("使用情况\n4.改变内存分配方式\n5.增加新的进程\n\n");
         scanf("%d", &choice);
         if(choice == 0) break;
         else if(choice == 1) {
-            printf("Enter the assigned process number:");
+            printf("输入分配的进程号:");
             scanf("%d", &a);
             if(vis[a] || a <= 0 || a > m){
-                printf("Please input legal data!\n");
+                printf("请输入合法数据\n");
                 continue;
             }
             int start;
             if(b)  start = Query(Pro[a], 1, n, 1);  
             else start = _Query(Pro[a], 1, n, 1);
-            if(start == -1) {printf("There is no memory to allocate\n"); continue;}
+            if(start == -1) {printf("没有可分配内存\n"); continue;}
             Start[a] = start;
             Update(start, start+Pro[a]-1, 0, 1, n, 1);
             vis[a] = true;
         }
         else if(choice == 2){
-            printf("Please enter the released process number:");
+            printf("请输入释放的进程号:");
             scanf("%d", &a);
             if(!vis[a] || a <= 0 || a > m){
-                printf("Please input legal data!\n");
+                printf("请输入合法数据\n");
                 continue;
             }   
             Update(Start[a], Start[a]+Pro[a]-1, 1, 1, n, 1);
@@ -158,25 +158,25 @@ int main()
             show(m);
         } 
         else if(choice == 4){
-            printf("Select how to allocate memory:\n1.First adaptation\n2.Best fit method\n");            
+            printf("选择内存的分配方式:\n1.最先适应法\n2.最佳适应法\n");            
             scanf("%d", &a);
             if(a == 1)  b = false;  
             else if(a == 2)  b = true;  
             else{
-                printf("Please input legal data!\n");
+                printf("请输入合法数据！\n");
                 return 0;
             }
         }
         else if(choice == 5){
-            printf("Please enter the number of added processes");
+            printf("请输入添加进程的数量");
             int tm;    
             scanf("%d", &tm);
-            printf("Please enter the amount of memory occupied by each process\n");
+            printf("请输入每个进程占据的内存大小\n");
             for(int i = m+1;i <= m+tm;++i)
                 scanf("%d", &Pro[i]);
             m += tm;
         }
-        else printf("Please input legal data!\n");
+        else printf("请输入合法数据!\n");
     }
     
     return 0;
