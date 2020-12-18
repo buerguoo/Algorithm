@@ -50,36 +50,44 @@ void PushDown(int rt, int ll, int rl)
 
 void Update(int L, int R, int C, int l, int r, int rt)
 {
+    //如果查询区间[L, R]包含结点区间[l, r]
+    //则修改该节点以及惰性标记
     if(L <= l && R >= r){
         add[rt] = C;
         Max[rt] = pre[rt] = suf[rt] = C*(r-l+1);
         return ;
     }
     int m = (l+r)>>1;
+    //惰性标记下移
     PushDown(rt, m-l+1, r-m);
-    if(L <= m) Update(L, R, C, lson);
+    //查询区间[L, R]左端点小于左结点右端点
+    //说明区间与节点区间有重合部分，递归调用
+    if(L <= m)  Update(L, R, C, lson);
+    //查询区间[L, R]右端点大于右结点左端点
     if(R > m)   Update(L, R, C, rson);
     PushUp(rt, r-l+1);
 }
 
 int Query(int L, int l, int r, int rt)
 {
+    //查询到叶子节点，返回
     if(l == r) return l;
     int m = (l+r)>>1;
     PushDown(rt, m-l+1, r-m);
+    //按左中右的顺序查找，最先适应
     if(Max[ls(rt)] >= L) return Query(L, lson);
     else if(suf[ls(rt)]+pre[rs(rt)] >= L) return m-suf[ls(rt)]+1;
     else if(Max[rs(rt)] >= L) return Query(L, rson);
     else return -1;
 }
 
-//????????
 int _Query(int L, int l, int r, int rt)
 {
     if(l == r) return l;
     int m = (l+r)>>1;
     PushDown(rt, m-l+1, r-m);
     int tmp = suf[ls(rt)]+pre[rs(rt)];
+    //满足它最大且适应区间，最佳适应
     if(Max[ls(rt)] >= tmp && Max[ls(rt)] >= Max[rs(rt)] && Max[ls(rt)] >= L)  
         return Query(L, lson);
     else if(tmp >= Max[ls(rt)] && tmp >= Max[rs(rt)] && tmp >= L) return m-suf[ls(rt)]+1;
@@ -124,7 +132,7 @@ int main()
         return 0;
     }
     while(1){
-        printf("\n  Enter the following to select:\n0.exit\n1.allocate\n2.release\n3.show");
+        printf("\nEnter the following to select:\n0.exit\n1.allocate\n2.release\n3.show");
         printf("\n4.Changing memory allocation\n5.Add new process\n\n");
         scanf("%d", &choice);
         if(choice == 0) break;
@@ -136,7 +144,7 @@ int main()
                 continue;
             }
             int start;
-            if(b)  start = Query(Pro[a], 1, n, 1);  
+            if(!b)  start = Query(Pro[a], 1, n, 1);  
             else start = _Query(Pro[a], 1, n, 1);
             if(start == -1) {printf("There is no memory to allocate\n"); continue;}
             Start[a] = start;
