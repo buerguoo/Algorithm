@@ -7,12 +7,29 @@
 #include <fstream>
 #include <map>
 #include <algorithm>
+#include <cstdlib>
+#include <ctime>
+#include <string>
 using namespace std;
+const int MAXN = 20010;//点数
+const int MAXM = 50010;//边数
+struct Edge{
+    int to, next;
+}edge[MAXM];
+int head[MAXN], tol;
+void addEdge(int u, int v){
+    edge[tol].to = v; edge[tol].next = head[u]; head[u] = tol++;
+}
 
 int main()
 {
-     printf("|    进程起始位置\t|    进程长度\t|进程号\t|\n");
-   //  printf("*************************************************\n");
-     printf("-------------------------------------------------\n");
+    int u, v;
+    memset(head, -1, sizeof(head));
+    for(int i = 0;i < 5;++i){
+        scanf("%d%d", &u, &v);
+        addEdge(u, v);
+    }
+    for(int i =  head[1];i != -1;i = edge[i].next)
+        printf("i=%d to=%d next=%d\n",i, edge[i].to, edge[i].next);
     return 0;
 }

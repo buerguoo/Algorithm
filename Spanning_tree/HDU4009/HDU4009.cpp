@@ -1,9 +1,9 @@
 /*
 Author:buerguoo
-Time:
-memory:
+Time:1123ms
+memory:7204kB
 
-Data:
+Data:2020-12-20 00:10:37
 */
 #include <iostream>
 #include <cstring>
@@ -94,11 +94,12 @@ int main()
             scanf("%d", &k);
             while(k--){
                 scanf("%d", &t);
+                if(t == i+1) continue;
                 E[m].u = i+1;
                 E[m].v = t;
                 int mhd = abs(P[i+1].x-P[t].x) + abs(P[i+1].y-P[t].y) + abs(P[i+1].z-P[t].z);
                 E[m].cost = Y*mhd;
-                if(P[i+1].z > P[t].z) E[m].cost += Z;
+                if(P[i+1].z < P[t].z) E[m].cost += Z;
                 m++;
             }
         }
