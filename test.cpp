@@ -11,8 +11,8 @@
 #include <ctime>
 #include <string>
 using namespace std;
-const int MAXN = 20010;//µãÊý
-const int MAXM = 50010;//±ßÊý
+const int MAXN = 20010;
+const int MAXM = 50010;
 struct Edge{
     int to, next;
 }edge[MAXM];
