@@ -15,11 +15,8 @@ Data:
 #include <map>
 #include <algorithm>
 using namespace std;
-#define FILL(a, b)  memset(a, b, sizeof(a))
-typedef long long ll;
 const int MAXN = 10010;
 const int MAXM = 100010;
-const int INF = 0x3f3f3f3f;
 
 
 
