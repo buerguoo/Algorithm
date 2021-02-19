@@ -23,11 +23,11 @@ void Tarjan(int u){
     Instack[u] = true;
     for(int i = head[u];i != -1;i = edge[i].next){
         v = edge[i].to;
-        if(!DFN[i]){
-            Tarjan(i);
+        if(!DFN[v]){
+            Tarjan(v);
             if(Low[u] > Low[v]) Low[u] = Low[v];
         }
-        else if(Instack[i] && Low[u] > DFN[v])
+        else if(Instack[v] && Low[u] > DFN[v])
             Low[u] = DFN[v];
     }
     if(Low[u] = DFN[u]){

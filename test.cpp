@@ -1,130 +1,103 @@
-#include<iostream>
-#include<algorithm>
-#include<cstring>
-#include<cstdio>
-#include<cstring>
-#include<queue>
-using namespace std;
-const int maxm=2005000;
-const int maxn=200500;
-struct Edge
+#include <iostream>
+#include <algorithm>
+#include <cstring>
+#include <cstdio>
+#include <queue>
+#include <map>
+using namespace std ;
+const int INF=0xfffffff ;
+struct node 
 {
-    int next;int id;int to;
-}edge[maxm];
-int head[maxn],dist[maxn],f[maxn],low[maxn],dfn[maxn],visit[maxn];
-int n,m,cnt,ans,step;
-void init()
+    int s,t,nxt ;
+}e[4000005] ;
+int n,m,idx,ans,tp,cnt,num[100005],IN[100005],OUT[100005],dfn[100005],vis[100005],low[100005],head[100005],st[100005],belong[100005] ;
+void add(int s,int t)
 {
-    memset(dist,0,sizeof(dist));
-    memset(visit,0,sizeof(visit));
-    memset(head,-1,sizeof(head));
-    memset(low,0,sizeof(low));
-    memset(dfn,0,sizeof(dfn));
-    for(int i=1;i<=n;i++)
-        f[i]=i;
-    step=ans=cnt=0;
+    e[cnt].s=s ;
+    e[cnt].t=t ;
+    e[cnt].nxt=head[s] ;
+    head[s]=cnt++ ;
 }
-int findf(int u)
+void tarjan(int u)
 {
-    if(u==f[u])
-        return u;
-    else
+    dfn[u]=low[u]=++idx ;
+    vis[u]=1 ;
+    st[++tp]=u ;
+    int v ;
+    for(int i=head[u] ;i!=-1 ;i=e[i].nxt)
     {
-        f[u]=findf(f[u]);
-        return f[u];
-    }
-}
-void join(int u,int v)
-{
-    int t1=findf(u);int t2=findf(v);
-    if(t1!=t2)
-        f[t2]=t1;
-}
-void add(int u,int v,int id)
-{
-    edge[cnt].next=head[u];edge[cnt].to=v;edge[cnt].id=id;head[u]=cnt++;
-    edge[cnt].next=head[v];edge[cnt].to=u;edge[cnt].id=id;head[v]=cnt++;
-}
-void tarjan(int u,int fa)
-{
-    low[u]=dfn[u]=++step;
-    for(int i=head[u];i!=-1;i=edge[i].next)
-    {
-        int v=edge[i].to;int id=edge[i].id;
-        if(fa==id)
-            continue;
+        v=e[i].t ;
         if(!dfn[v])
         {
-            tarjan(v,id);
-            low[u]=min(low[u],low[v]);
-            if(dfn[u]<low[v])
-            {
-                ans++;
-            }
-            else
-            {
-                join(u,v);
-            }
+            tarjan(v) ;
+            low[u]=min(low[u],low[v]) ;
         }
-        else
+        else if(vis[v])
+            low[u]=min(low[u],dfn[v]) ;
+    }
+    if(dfn[u]==low[u])
+    {
+        ans++ ;
+        while(1)
         {
-            low[u]=min(low[u],dfn[v]);
+            v=st[tp--] ;
+            vis[v]=0 ;
+            belong[v]=ans ;
+            num[ans]++ ;
+            if(v==u)break ;
         }
     }
 }
-void bfs(int u)
+void sc()
 {
-    visit[u]=1;dist[u]=0;
-    queue<int>q;
-    q.push(u);
-    while(!q.empty())
-    {
-        int x=q.front();q.pop();
-        for(int i=head[x];i!=-1;i=edge[i].next)
-        {
-            int v=edge[i].to;
-            if(visit[v])
-                continue;
-            if(findf(x)==findf(v))
-            {
-                q.push(v);dist[v]=dist[x];visit[v]=1;
-            }
-            else
-            {
-                q.push(v);dist[v]=dist[x]+1;visit[v]=1;
-            }
-        }
-    }
+    memset(vis,0,sizeof(vis)) ;
+    memset(dfn,0,sizeof(dfn)) ;
+    memset(num,0,sizeof(num)) ;
+    idx=tp=ans=0 ;
+    for(int i=1 ;i<=n ;i++)
+        if(!dfn[i])
+            tarjan(i) ;
 }
 int main()
 {
-    int x,y;
-    while(scanf("%d%d",&n,&m)&&n&&m)
+    int T ;
+    scanf("%d",&T) ;
+    for(int cas=1 ;cas<=T ;cas++)
     {
-        init();
-        for(int i=1;i<=m;i++)
+        cnt=0 ;
+        memset(head,-1,sizeof(head)) ;
+        scanf("%d%d",&n,&m) ;
+        for(int i=0 ;i<m ;i++)
         {
-            scanf("%d%d",&x,&y);
-            add(x,y,i);
+            int s,t ;
+            scanf("%d%d",&s,&t) ;
+            add(s,t) ;
         }
-        tarjan(1,0);
-        bfs(1);
-        int maxx=0;int pos=1;
-        for(int i=1;i<=n;i++)
+        sc() ;
+        if(ans==1)
         {
-            if(maxx<dist[i])
+            printf("Case %d: -1\n",cas) ;
+            continue ;
+        }
+        memset(IN,0,sizeof(IN)) ;
+        memset(OUT,0,sizeof(OUT)) ;
+        for(int u=1 ;u<=n ;u++)
+        {
+            for(int i=head[u] ;i!=-1 ;i=e[i].nxt)
             {
-                maxx=dist[i];pos=i;
+                int tt=e[i].t ;
+                if(belong[tt]==belong[u])continue ;
+                IN[belong[tt]]++ ;
+                OUT[belong[u]]++ ;
             }
         }
-        memset(visit,0,sizeof(visit));memset(dist,0,sizeof(dist));
-        bfs(pos);
-        maxx=0;
-        for(int i=1;i<=n;i++)
+        int ret=-1 ;
+        for(int i=1 ;i<=ans ;i++)
         {
-            if(maxx<dist[i])
-                maxx=dist[i];
+            if(!IN[i] || !OUT[i])
+                ret=max(ret,n*(n-1)-m-num[i]*(n-num[i])) ;
         }
-        printf("%d\n",ans-maxx);
+        printf("Case %d: %d\n",cas,ret) ;
     }
+    return 0 ;
 }
