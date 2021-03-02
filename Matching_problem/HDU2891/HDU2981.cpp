@@ -18,7 +18,7 @@ using namespace std;
 const int MAXN = 110;
 int g[MAXN][MAXN];
 bool used[MAXN];
-int linker[MAXN], N, ansx[MAXN*MAXN], ansy[MAXN*MAXN], x[MAXN];
+int linker[MAXN], N, x[MAXN], y[MAXN];
 //最大匹配
 bool dfs(int u){
     for(int v = 1;v <= N;++v){
@@ -26,7 +26,6 @@ bool dfs(int u){
             used[v] = true;
             if(linker[v] == -1 || dfs(linker[v])){
                 linker[v] = u;
-                x[u] = v;
                 return true;
             }
         }
@@ -47,20 +46,20 @@ void hungry(){
     int res = 0;
     //交换 
     for(int i = 1;i <= N;++i){
-        if(x[i] == i) continue;
-        else res++;
+        if(linker[i] == i) continue;
+        //else res++;
         for(int j = i+1;j <= N;++j){
-            if(x[j] == i){
-                ansx[res] = i;
-                ansy[res++] = x[i];
-                x[j] = x[i];
+            if(i == linker[j]){
+                x[res] = i;
+                y[res++] = linker[i];
+                linker[j] = linker[i];
                 break;
             }
         }
     }
     printf("%d\n",res);
     for(int i = 0;i < res;++i)
-        printf("C %d %d\n", ansx[i], ansy[i]);
+        printf("R %d %d\n", x[i], y[i]);
 }
 int main()
 {
@@ -72,4 +71,3 @@ int main()
     }
     return 0;
 }
-
