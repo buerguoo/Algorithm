@@ -2,7 +2,11 @@
     "files.associations": {
         "xstring": "cpp",
         "vector": "cpp",
-        "iostream": "cpp"
+        "iostream": "cpp",
+        "algorithm": "cpp",
+        "list": "cpp",
+        "xmemory": "cpp",
+        "xtree": "cpp"
     }
     //"terminal.integrated.shell.windows": "cmd.exe",
     //"terminal.integrated.shellArgs.windows": ["/k", "D:\\Program Files\\cmder\\vendorinit.bat"]
