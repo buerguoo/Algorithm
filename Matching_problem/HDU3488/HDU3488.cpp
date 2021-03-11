@@ -1,9 +1,9 @@
 /*
 Author:buerguoo
-Time:
-memory:
+Time:124ms
+memory:1900kB
 
-Data:
+Data:2021-03-11 11:59:58
 */
 #include <iostream>
 #include <cstring>
@@ -25,7 +25,7 @@ bool dfs(int u)
 {
     visx[u] = true;
     for(int v = 0;v < N;++v){
-        if(visy[v] || !g[u][v]) continue;
+        if(visy[v] || g[u][v] == -INF) continue;
         int tmp = lx[u] + ly[v] - g[u][v];
         if(tmp == 0){
             visy[v] = true;
@@ -47,7 +47,7 @@ int KM()
     for(int i = 0;i < N;++i){
         lx[i] = -INF;
         for(int j = 0;j < N;j++){
-            if(lx[i] < g[i][j] && g[i][j] != 0)
+            if(lx[i] < g[i][j])
                 lx[i] = g[i][j];
         }
     }
@@ -84,10 +84,12 @@ int main()
     scanf("%d", &K);
     while(K--){
         scanf("%d %d", &N, &M);
-        memset(g, 0, sizeof(g));
+        for(int i = 0;i < N;++i)
+            for(int j = 0;j < N;++j)
+                g[i][j] = -INF;
         while(M--){
             scanf("%d %d %d", &u, &v, &w);
-            g[u-1][v-1] = -w;
+            g[u-1][v-1] = max(-w, g[u-1][v-1]);
         }
         printf("%d\n", -KM());
     }
