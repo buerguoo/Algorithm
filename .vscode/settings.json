@@ -6,7 +6,8 @@
         "algorithm": "cpp",
         "list": "cpp",
         "xmemory": "cpp",
-        "xtree": "cpp"
+        "xtree": "cpp",
+        "queue": "cpp"
     }
     //"terminal.integrated.shell.windows": "cmd.exe",
     //"terminal.integrated.shellArgs.windows": ["/k", "D:\\Program Files\\cmder\\vendorinit.bat"]

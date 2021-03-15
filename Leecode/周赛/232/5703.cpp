@@ -1,10 +1,3 @@
-/*
-Author:buerguoo
-Time:
-memory:
-
-Data:
-*/
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -15,6 +8,7 @@ Data:
 #include <map>
 #include <algorithm>
 using namespace std;
+
 struct Node{
     int x;
     int y;
@@ -22,7 +16,9 @@ struct Node{
         return (double)x/y > (double)r.x/r.y;
     }
 };
-double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
+class Solution {
+public:
+    double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
         priority_queue<Node> Q;
         int sz = classes.size();
         double res = 0;
@@ -46,9 +42,4 @@ double maxAverageRatio(vector<vector<int>>& classes, int extraStudents) {
         }
         return res/sz;
     }
-int main()
-{
-    vector<vector<int>> classes = [[1,2],[3,5],[2,2]];
-    
-    return 0;
-}
+};
