@@ -136,3 +136,82 @@ int dinic(int s, int t, int n)
     }
     return maxflow;
 }
+
+/*
+    zkw费用流
+    使用类似KM算法重标号的方法对dis进行重标号。
+    适合二分图的最小费用流
+*/
+int dis[MAXN], cur[MAXN];
+bool vis[MAXN];
+int head[MAXN], tol;
+int ss, tt, N;
+struct Edge{
+    int to, next, cost, cap, flow;
+    Edge(int _t, int _n, int _cost, int _cap, int _f): to(_t), next(_n), 
+        cost(_cost), cap(_cap), flow(_f){}
+
+}E[MAXM];
+void init()
+{
+    tol = 0;
+    memset(head, -1, sizeof(head));
+}
+void addEdge(int u, int v, int w, int cost)
+{
+    E[tol] = Edge(v, head[u], cost, w, 0);
+    head[u] = tol++;
+    E[tol] = Edge(u, head[v], -cost, 0, 0);
+    head[v] = tol++;
+}
+int aug(int u, int flow){
+    if(u == tt) return flow;
+    vis[u] = true;
+    for(int i = cur[u];i != -1;i = E[i].next){
+        int v = E[i].to;
+        if(!vis[v] && E[i].cap > E[i].flow && dis[u] == dis[v] + E[i].cost){
+            int tp = aug(v, min(flow, E[i].cap-E[i].flow));
+            E[i].flow += tp;
+            E[i^1].flow -= tp;
+            if(tp) return tp;
+        }
+    }
+    return 0;
+}
+bool modify_lable()
+{
+    int d = INF;
+    for(int u = 0;u < N;++u)
+        if(vis[u])
+            for(int i = head[u];i != -1;i = E[i].next){
+                int v = E[i].to;
+                if(!vis[v] && E[i].cap > E[i].flow){
+                    d = min(d, dis[v]+E[i].cost-dis[u]);
+                }
+            }
+    if(d == INF) return false;
+    for(int i = 0;i < N;++i)
+        if(vis[i]){
+            dis[i] += d;
+            vis[i] = false;
+        }
+    
+    return true;
+}
+pair<int, int> zkw(int s, int t, int n){
+    ss = s, tt = t, N = n;
+    int maxflow = 0, maxcost = 0;
+    for(int i = 0;i < n;++i) dis[i] = 0;
+    while(1){
+        for(int i = 0;i < n;++i) cur[i] = head[i];
+        while(1){
+            for(int i = 0;i < n;++i) vis[i] = false;
+            int tmp = aug(s, INF);
+            if(tmp == 0) break;
+            maxflow += tmp;
+            maxcost += tmp * dis[ss];
+        }
+        if(!modify_lable()) break;
+    }
+    return make_pair(maxflow, maxcost);
+}
