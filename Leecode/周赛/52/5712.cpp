@@ -29,5 +29,7 @@ public:
         for(int i = 0;i < sz;++i)
             if(x + 1 >= coins[i])
                 x += coins[i];
+        
+        return x + 1;
     }
 };
