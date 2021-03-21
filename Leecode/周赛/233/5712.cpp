@@ -25,7 +25,4 @@ public:
     int getMaximumConsecutive(vector<int>& coins) {
 
     }
-    void build(int l, int r, int rt){
-        
-    }
 };
