@@ -23,6 +23,11 @@ const int MAXM = 100010;
 class Solution {
 public:
     int getMaximumConsecutive(vector<int>& coins) {
-
+        int x = 0;
+        sort(coins.begin(), coins.end());
+        int sz = coins.size();
+        for(int i = 0;i < sz;++i)
+            if(x + 1 >= coins[i])
+                x += coins[i];
     }
 };
