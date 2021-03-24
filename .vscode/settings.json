@@ -9,7 +9,8 @@
         "xtree": "cpp",
         "queue": "cpp",
         "utility": "cpp",
-        "cstring": "cpp"
+        "cstring": "cpp",
+        "stack": "cpp"
     }
     //"terminal.integrated.shell.windows": "cmd.exe",
     //"terminal.integrated.shellArgs.windows": ["/k", "D:\\Program Files\\cmder\\vendorinit.bat"]
