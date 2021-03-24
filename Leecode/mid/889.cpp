@@ -28,18 +28,22 @@ struct TreeNode {
 };
 class Solution {
 public:
-    int sz;
     TreeNode* constructFromPrePost(vector<int>& pre, vector<int>& post) {
-        sz = pre.size();
-        createTree(1, pre);
-        
+        int N = pre.size();
+        return createTree(0, 0, N, pre, post);
     }
-    TreeNode* createTree(int rt, vector<int> pre){
+    TreeNode* createTree(int i0, int i1, int N, vector<int> &pre, vector<int>& post){
         
-        if(rt > sz) return NULL; 
-        TreeNode* root = new TreeNode(pre[rt-1]);
-        root->left = createTree(rt<<1, pre);
-        root->right = createTree(rt<<1|1, pre);
+        if(N == 0) return NULL;
+        TreeNode* root = new TreeNode(pre[i0]);
+        if(N == 1) return root;
+        int L = 1;
+        for(;L < N;++L)
+            if(pre[i0+1] == post[i1+L-1])
+                break;
+        root->left = createTree(i0+1, i1, L, pre, post);
+        root->right = createTree(i0+L+1, i1+L, N-L-1, pre, post);
+
         return root;
     }
 };
