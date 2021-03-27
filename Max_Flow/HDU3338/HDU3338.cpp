@@ -20,10 +20,14 @@ Data:
 #include <algorithm>
 using namespace std;
 const int INF = 0x3f3f3f3f;
-const int MAXN = 10010;
-const int MAXM = 100010;
+const int MAXN = 5010;
 int dis[MAXN], cur[MAXN], pre[MAXN], gap[MAXN];
-int maze[MAXN][MAXN];
+int maze[MAXN][MAXN], G[MAXN][MAXN];
+struct black{
+    int x, y, val, ind;
+    bool type;
+    black(int _x, int _y, int _v, int _i, bool _t):x(_x), y(_y), val(_v), ind(_i), type(_t){}
+};
 int sap(int s, int t, int nodenum)
 {
     memset(dis, 0, sizeof(dis));
@@ -62,12 +66,90 @@ int sap(int s, int t, int nodenum)
     }
     return maxflow;
 }
+int id[100][100];
+queue<black> Q;
+int rnum, bnum;
+bool isNum(char c)
+{
+    if(c < '0' || c > '9')
+        return false;
+    
+    return true;
+}
+void to(char *p, int x, int y)
+{
+    int res = 0;
+    if(isNum(p[0])){
+        for(int i = 0;i < 3;++i)
+            res = res * 10 + (p[i] - '0');
+        Q.push(black(x, y, res, ++bnum, false));
+    }else if(p[0] == '.') id[x][y] = ++rnum;
+    res = 0;
+    if(isNum(p[4])){
+        for(int i = 4;i < 7;++i)
+            res = res * 10 + (p[i] - '0');
+        Q.push(black(x, y, res, ++bnum, true));
+    }   
+}
 int main()
 {
     int n, m;
     char p[8];
     while(~scanf("%d %d", &n, &m)){
-        
+        memset(id, 0, sizeof(id));
+        memset(maze, 0, sizeof(maze));
+        while(!Q.empty()) Q.pop();
+        rnum = bnum = 0;
+        for(int i = 0;i < n;++i)
+            for(int j = 0;j < m;++j){
+                scanf("%s", p);
+                to(p, i, j);
+            }
+        int s = 0, t = rnum+bnum+1;
+        while(!Q.empty()){
+            black tmp = Q.front();
+            Q.pop();
+            int count = 0;
+            if(!tmp.type){
+                int j = tmp.y;
+                for(int i = tmp.x+1;i < n;++i)
+                    if(id[i][j]){
+                        maze[id[i][j]][rnum+tmp.ind] = 8;
+                        maze[rnum+tmp.ind][id[i][j]] = -8;
+                        count++;
+                    }else  break;
+                for(int i = tmp.x+1;i < n;++i)
+                    if(id[i][j]){
+                        maze[rnum+tmp.ind][t] = tmp.val-count;
+                        maze[t][rnum+tmp.ind] = count-tmp.val;
+                    }else  break;   
+            }else{
+                int i = tmp.x;
+                for(int j = tmp.y+1;j < m;++j)
+                    if(id[i][j]){
+                        maze[id[i][j]][rnum+tmp.ind] = -8;
+                        maze[rnum+tmp.ind][id[i][j]] = 8;
+                        count++;
+                    }else break;
+                for(int j = tmp.y+1;j < m;++j)
+                    if(id[i][j]){
+                        maze[s][rnum+tmp.ind] = tmp.val-count;
+                        maze[rnum+tmp.ind][s] = count-tmp.val;
+                    }else break;
+            }
+        }
+        memcpy(G, maze, sizeof(G));
+        sap(s, t, rnum+bnum+2);
+        for(int i = 0;i < n;++i){
+            for(int j = 0;j < m;++j)    if(id[i][j]){
+                for(int k = rnum;k < rnum+bnum+1;++k) if(G[id[i][j]][k]){
+                    //printf("G = %d maze = %d\n", G[id[i][j]][k], maze[id[i][j]][k]);
+                    printf("%d ", G[id[i][j]][k] - maze[id[i][j]][k] + 1);
+                    break;
+                }
+            }else printf("- "); 
+            printf("\n");
+            }
     }
     return 0;
 }
