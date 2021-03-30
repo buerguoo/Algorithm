@@ -20,7 +20,7 @@ Data:
 #include <algorithm>
 using namespace std;
 const int INF = 0x3f3f3f3f;
-const int MAXN = 5010;
+const int MAXN = 2010;
 int dis[MAXN], cur[MAXN], pre[MAXN], gap[MAXN];
 int maze[MAXN][MAXN], G[MAXN][MAXN];
 struct black{
