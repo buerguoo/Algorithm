@@ -22,6 +22,7 @@ using namespace std;
 const int INF = 0x3f3f3f3f;
 const int MAXN = 210;
 int maze[MAXN][MAXN];
+int mp[MAXN][MAXN];
 int gap[MAXN], pre[MAXN], cur[MAXN], dis[MAXN];
 int F[MAXN];
 int sap(int s, int t, int nodenum)
@@ -76,47 +77,48 @@ void Union(int x1, int x2)
 }
 int main()
 {
-    int  Case;
+    int Case;
     int n, m, f;
     int u, v;
     scanf("%d", &Case);
     while(Case--){
-        memset(maze, 0, sizeof(maze));
+        memset(mp, 0, sizeof(mp));
         memset(F, -1, sizeof(F));
         scanf("%d %d %d", &n, &m, &f);
         int s = 0, t = 2 * n + 1;
-        for(int i = 1;i <= n;++i){
-            maze[s][i] = n;
-            maze[i][s] = -n;
-            maze[i+n][t] = n;
-            maze[t][i+n] = -n;
-        }
         while(m--){
             scanf("%d %d", &u, &v);
-            maze[u][n+v] = 1;
-            maze[v+n][u] = -1;
+            mp[u][n+v] = 1;
+            mp[v+n][u] = -1;
         }
         while(f--){
             scanf("%d %d", &u, &v);
             Union(u, v);
-            //maze[u][v] = 1;
-            //maze[v][u] = -1;
-        }
-        
+        } 
         for(int i = 1;i <= n;++i)
             for(int j = 1;j <= n;++j)
                 if(find(i) == find(j))
-                    for(int k = n+1;k <= 2*n;++k){
-                        if(maze[i][k] == 1){
-                            maze[j][k] = 1;
-                            maze[k][j] = -1;
+                    for(int k = n+1;k <= 2*n;++k)
+                        if(mp[i][k] == 1){
+                            mp[j][k] = 1;
+                            mp[k][j] = -1;
                         }
-                }
-        sap(s, t, 2*n+2);
-
-        int ans = INF;
-        for(int i = 1;i <= n;++i)
-            if(ans > n-maze[s][i]) ans = n - maze[s][i];
+        int l = 0, h = n, mid, ans;
+        while(l <= h){
+            mid = (l + h) >> 1;
+            memcpy(maze, mp, sizeof(maze));
+            for(int i = 1;i <= n;++i){
+                maze[s][i] = mid;
+                maze[i][s] = -mid;
+                maze[i+n][t] = mid;
+                maze[t][i+n] = -mid;
+            }
+            if(mid*n == sap(s, t, 2*n+2)){
+                ans = mid;   
+                l = mid+1;
+            }
+            else h = mid-1;
+        }
         printf("%d\n", ans);
     }
     return 0;
