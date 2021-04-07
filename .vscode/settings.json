@@ -11,7 +11,8 @@
         "utility": "cpp",
         "cstring": "cpp",
         "stack": "cpp"
-    }
+    },
+    "python.pythonPath": "D:\\Anaconda\\python.exe"
     //"terminal.integrated.shell.windows": "cmd.exe",
     //"terminal.integrated.shellArgs.windows": ["/k", "D:\\Program Files\\cmder\\vendorinit.bat"]
 }
