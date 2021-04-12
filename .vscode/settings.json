@@ -10,7 +10,8 @@
         "queue": "cpp",
         "utility": "cpp",
         "cstring": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "cstdio": "cpp"
     },
     "python.pythonPath": "D:\\Anaconda\\python.exe"
     //"terminal.integrated.shell.windows": "cmd.exe",
