@@ -1,12 +1,12 @@
 /*
-Time limit:
-Memory limit:
+Time limit:1000ms
+Memory limit:32768kb
 
 Author:buerguoo
-Time:
-memory:
+Time:46ms
+memory:1744kb
 
-Data:
+Data:2021-04-12 22:02:16
 */
 #include <iostream>
 #include <cstring>
