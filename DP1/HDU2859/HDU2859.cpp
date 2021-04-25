@@ -3,10 +3,10 @@ Time limit:1000ms
 Memory limit:32768kb
 
 Author:buerguoo
-Time:
-memory:
+Time:1653ms
+memory:6716kB
 
-Data:
+Data:2021-04-25 23:10:45
 */
 #include <iostream>
 #include <cstring>
@@ -34,6 +34,7 @@ bool match(int x, int y, int m)
 }
 int main()
 {
+    int x, y;
     while(~scanf("%d", &n) && n){
         for(int i = 0;i < n;++i)    scanf("%s", &a[i]);
         memset(dp, 0, sizeof(dp));
@@ -42,9 +43,11 @@ int main()
         int Max = 1;
         for(int i = n-2;i >= 0;--i)
             for(int j = 1;j < n;++j){
-                if(match(i, j, dp[i+1][j-1]))
-                    dp[i][j] = dp[i+1][j-1] + 1;
-                else dp[i][j] = 1;
+                x = i+1, y = j-1;
+                while(a[x][j] == a[i][y] && x < n && y >= 0){
+                    x++; y--;
+                }
+                dp[i][j] = min(dp[i+1][j-1]+1, j-y);
                 Max = max(Max, dp[i][j]);
             }
         printf("%d\n", Max);
