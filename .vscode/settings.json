@@ -11,7 +11,9 @@
         "utility": "cpp",
         "cstring": "cpp",
         "stack": "cpp",
-        "cstdio": "cpp"
+        "cstdio": "cpp",
+        "map": "cpp",
+        "deque": "cpp"
     },
     "python.pythonPath": "D:\\Anaconda\\python.exe"
     //"terminal.integrated.shell.windows": "cmd.exe",
