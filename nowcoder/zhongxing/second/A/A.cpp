@@ -16,21 +16,14 @@ const int MAXM = 100010;
 int main()
 {
     ll k, a, b;
-    ll d = 0;
-    ll ans = 1;
+    int ans = -1;
     scanf("%lld %lld %lld", &k, &a, &b);
-    if(k < 0){
-        k = -k;
-        swap(a, b);
+    if(k > 0 && k <= a) ans = 1;
+    else if(k*(a-b) <= 0) ans = -1;
+    else{
+        if(k > 0) ans = (k-a)/(a-b)+ 1 + ((k-a)%(a-b)==0?0:1);
+        else ans = k/(a-b) + (k%(a-b)==0?0:1);
     }
-    if(a <= b){
-        ans = -1;
-    }else{
-        while((d + a) < k){
-            ans++;
-            d += a - b;
-        }
-    }
-    printf("%lld\n", ans);
+    printf("%d\n", ans);
     return 0;
 }

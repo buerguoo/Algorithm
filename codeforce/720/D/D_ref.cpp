@@ -40,7 +40,7 @@ void dfs(int u,int fa)
     }
     for(auto &v:q)
     {
-        ans.push_back({u,v,y[v],y[u]});
+        ans.push_back({u, v, y[v], y[u]});
         y[u]=z[v];
     }
 }
